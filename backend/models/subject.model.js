@@ -1,14 +1,17 @@
 const mongoose = require("mongoose");
 
-const Subject = new mongoose.Schema(
+const SubjectSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
+      trim: true,
     },
     code: {
       type: String,
       required: true,
+      trim: true,
+      unique: true,
     },
     branch: {
       type: mongoose.Schema.Types.ObjectId,
@@ -27,4 +30,4 @@ const Subject = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Subject", Subject);
+module.exports = mongoose.model("Subject", SubjectSchema);

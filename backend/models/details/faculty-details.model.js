@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+
 const facultyDetailsSchema = new mongoose.Schema(
   {
     employeeId: {
-      type: Number,
+      type: String,
       required: true,
+      unique: true,
     },
     firstName: {
       type: String,
@@ -17,10 +19,12 @@ const facultyDetailsSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     phone: {
       type: String,
       required: true,
+      unique: true,
     },
     profile: {
       type: String,
@@ -47,8 +51,8 @@ const facultyDetailsSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      required: true,
       enum: ["male", "female", "other"],
+      required: true,
     },
     dob: {
       type: Date,
@@ -56,6 +60,7 @@ const facultyDetailsSchema = new mongoose.Schema(
     },
     designation: {
       type: String,
+      enum: ["Professor", "Assistant Professor", "Associate Professor"],
       required: true,
     },
     joiningDate: {
@@ -89,17 +94,18 @@ const facultyDetailsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+      role: {
+      type: String,
+      default: "faculty",
+    },
   },
   { timestamps: true }
 );
 
 facultyDetailsSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
-  }
+  if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
 
-const facultyDetails = mongoose.model("FacultyDetail", facultyDetailsSchema);
-
-module.exports = facultyDetails;
+module.exports = mongoose.model("FacultyDetail", facultyDetailsSchema);

@@ -7,6 +7,8 @@ import Heading from "../../components/Heading";
 import DeleteConfirm from "../../components/DeleteConfirm";
 import CustomButton from "../../components/CustomButton";
 import Loading from "../../components/Loading";
+import MentorView from "./MentorView";
+
 const Admin = () => {
   const [data, setData] = useState({
     firstName: "",

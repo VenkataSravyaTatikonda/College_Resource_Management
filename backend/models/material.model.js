@@ -31,7 +31,7 @@ const Material = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["notes", "assignment", "syllabus", "other"],
+      enum: ["notes", "assignment", "syllabus", "other","previous year paper","Regulation"],
       required: true,
     },
   },

@@ -2,17 +2,20 @@ const connectToMongo = require("./database/db");
 const express = require("express");
 const app = express();
 const path = require("path");
+const cors = require("cors");
+
 connectToMongo();
-const port = 4000 || process.env.PORT;
-var cors = require("cors");
+
+const port = process.env.PORT || 4000;
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_API_LINK,
+    origin: process.env.FRONTEND_API_LINK || "http://localhost:3000",
+    credentials: true,
   })
 );
 
-app.use(express.json()); //to convert request data to json
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Hello 👋 I am Working Fine 🚀");
@@ -31,6 +34,8 @@ app.use("/api/timetable", require("./routes/timetable.route"));
 app.use("/api/material", require("./routes/material.route"));
 app.use("/api/exam", require("./routes/exam.route"));
 app.use("/api/marks", require("./routes/marks.route"));
+app.use("/api/tnp", require("./routes/tnp.route"));
+app.use("/api/academic", require("./routes/academicRoutes"));
 
 app.listen(port, () => {
   console.log(`Server Listening On http://localhost:${port}`);

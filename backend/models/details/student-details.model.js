@@ -3,8 +3,9 @@ const bcrypt = require("bcryptjs");
 const studentDetailsSchema = new mongoose.Schema(
   {
     enrollmentNo: {
-      type: Number,
+      type: String,
       required: true,
+      unique: true,
     },
     firstName: {
       type: String,
@@ -12,7 +13,7 @@ const studentDetailsSchema = new mongoose.Schema(
     },
     middleName: {
       type: String,
-      required: true,
+      required: false,
     },
     lastName: {
       type: String,
@@ -21,10 +22,12 @@ const studentDetailsSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     phone: {
       type: String,
       required: true,
+      unique: true,
     },
     semester: {
       type: Number,
@@ -85,6 +88,10 @@ const studentDetailsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+      role: {
+      type: String,
+      default: "student",
+      },
   },
   { timestamps: true }
 );
@@ -96,6 +103,5 @@ studentDetailsSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-const studentDetails = mongoose.model("StudentDetail", studentDetailsSchema);
-
-module.exports = studentDetails;
+const Student = mongoose.model("Student", studentDetailsSchema);
+module.exports = Student;

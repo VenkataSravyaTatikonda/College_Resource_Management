@@ -61,7 +61,7 @@ const Material = () => {
         setSubjects([]);
       } else {
         toast.error(
-          error?.response?.data?.message || "Failed to load subjects"
+          error?.response?.data?.message || "Failed to load subjects",
         );
       }
     } finally {
@@ -86,7 +86,7 @@ const Material = () => {
         setBranches([]);
       } else {
         toast.error(
-          error?.response?.data?.message || "Failed to load branches"
+          error?.response?.data?.message || "Failed to load branches",
         );
       }
     } finally {
@@ -116,7 +116,7 @@ const Material = () => {
         setMaterials([]);
       } else {
         toast.error(
-          error?.response?.data?.message || "Failed to load materials"
+          error?.response?.data?.message || "Failed to load materials",
         );
       }
     } finally {
@@ -160,7 +160,7 @@ const Material = () => {
     e.preventDefault();
     setDataLoading(true);
     toast.loading(
-      editingMaterial ? "Updating material..." : "Adding material..."
+      editingMaterial ? "Updating material..." : "Adding material...",
     );
 
     try {
@@ -175,7 +175,7 @@ const Material = () => {
       if (editingMaterial) {
         await axiosWrapper.put(
           `/material/${editingMaterial._id}`,
-          formDataToSend
+          formDataToSend,
         );
         toast.success("Material updated successfully");
       } else {
@@ -200,16 +200,17 @@ const Material = () => {
   };
 
   const handleEdit = (material) => {
-    setEditingMaterial(material);
-    setFormData({
-      title: material.title,
-      subject: material.subject._id,
-      semester: material.semester,
-      branch: material.branch._id,
-      type: material.type,
-    });
-    setShowModal(true);
-  };
+  setEditingMaterial(material);
+  setFormData({
+    title: material.title,
+    subject: material.subject?._id || "",
+    semester: material.semester,
+    branch: material.branch?._id || "",
+    type: material.type,
+  });
+  setShowModal(true);
+};
+
 
   const handleDelete = async () => {
     try {
@@ -224,7 +225,7 @@ const Material = () => {
       fetchMaterials();
     } catch (error) {
       toast.error(
-        error?.response?.data?.message || "Failed to delete material"
+        error?.response?.data?.message || "Failed to delete material",
       );
     }
   };
@@ -345,7 +346,7 @@ const Material = () => {
                       variant="primary"
                       onClick={() => {
                         window.open(
-                          `${process.env.REACT_APP_MEDIA_LINK}/${material.file}`
+                          `${process.env.REACT_APP_MEDIA_LINK}/${material.file}`,
                         );
                       }}
                     >
@@ -353,9 +354,13 @@ const Material = () => {
                     </CustomButton>
                   </td>
                   <td className="py-4 px-6">{material.title}</td>
-                  <td className="py-4 px-6">{material.subject.name}</td>
+                  <td className="py-4 px-6">
+                    {material.subject?.name || "N/A"}
+                  </td>
                   <td className="py-4 px-6">{material.semester}</td>
-                  <td className="py-4 px-6">{material.branch.name}</td>
+                  <td className="py-4 px-6">
+                    {material.branch?.name || "N/A"}
+                  </td>
                   <td className="py-4 px-6 capitalize">{material.type}</td>
                   <td className="py-4 px-6">
                     <div className="flex gap-4">
@@ -540,8 +545,8 @@ const Material = () => {
                   {dataLoading
                     ? "Processing..."
                     : editingMaterial
-                    ? "Update Material"
-                    : "Add Material"}
+                      ? "Update Material"
+                      : "Add Material"}
                 </CustomButton>
               </div>
             </form>

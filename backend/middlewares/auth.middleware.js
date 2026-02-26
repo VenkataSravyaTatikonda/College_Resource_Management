@@ -3,32 +3,26 @@ const ApiResponse = require("../utils/ApiResponse");
 
 const auth = async (req, res, next) => {
   try {
-    let token = req.header("Authorization");
+    const authHeader = req.header("Authorization");
 
-    if (!token || !token.startsWith("Bearer ")) {
-      return ApiResponse.unauthorized("Authentication token required").send(
-        res
-      );
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return ApiResponse.unauthorized("Token required").send(res);
     }
 
-    token = token.split(" ")[1];
+    const token = authHeader.split(" ")[1];
 
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      if (!decoded.userId) {
-        return ApiResponse.unauthorized("Invalid token format").send(res);
-      }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded JWT:", decoded);
 
-      req.userId = decoded.userId;
-      req.token = token;
-      next();
-    } catch (jwtError) {
-      console.error("JWT Error:", jwtError);
-      return ApiResponse.unauthorized("Invalid or expired token").send(res);
-    }
+    req.userId = decoded.userId;
+    req.userRole = decoded.role; // 👈 future use (faculty/admin/student)
+    next();
   } catch (error) {
-    console.error("Auth Middleware Error:", error);
-    return ApiResponse.unauthorized("Authentication failed").send(res);
+    console.error("JWT Error:", error.message);
+
+    return ApiResponse.unauthorized(
+      "Session expired. Please login again"
+    ).send(res);
   }
 };
 

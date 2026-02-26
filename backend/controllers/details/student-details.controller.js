@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const ApiResponse = require("../../utils/ApiResponse");
 const jwt = require("jsonwebtoken");
 const sendResetMail = require("../../utils/SendMail");
+const Branch = require("../../models/branch.model");
 
 const loginStudentController = async (req, res) => {
   try {
@@ -21,7 +22,7 @@ const loginStudentController = async (req, res) => {
       return ApiResponse.unauthorized("Invalid password").send(res);
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
@@ -52,26 +53,43 @@ const getAllDetailsController = async (req, res) => {
 
 const registerStudentController = async (req, res) => {
   try {
-    const profile = req.file.filename;
+    const profile = req.file?.filename;
 
-    const enrollmentNo = Math.floor(100000 + Math.random() * 900000);
+    const year = new Date().getFullYear();
+
+    const branchData = await Branch.findById(req.body.branchId);
+    if (!branchData) {
+      return ApiResponse.badRequest("Invalid Branch").send(res);
+    }
+
+    const branchCode = branchData.code;
+
+    const count = await studentDetails.countDocuments({
+      branchId: req.body.branchId,
+      enrollmentNo: { $regex: `^${year}${branchCode}` },
+    });
+   
+    const rollNo = String(count + 1).padStart(3, "0");
+    const enrollmentNo = `${year}${branchCode}${rollNo}`;
+
     const email = `${enrollmentNo}@gmail.com`;
 
     const user = await studentDetails.create({
       ...req.body,
       profile,
-      password: "student123",
-      email,
       enrollmentNo,
+      email,
+      password: "student123",
     });
 
     const sanitizedUser = await studentDetails
       .findById(user._id)
       .select("-__v -password");
 
-    return ApiResponse.created(sanitizedUser, "Student Details Added!").send(
-      res
-    );
+    return ApiResponse.created(
+      sanitizedUser,
+      "Student Details Added!"
+    ).send(res);
   } catch (error) {
     console.error("Add Details Error: ", error);
     return ApiResponse.internalServerError().send(res);

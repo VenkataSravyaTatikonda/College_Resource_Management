@@ -12,6 +12,14 @@ const Branch = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    code: {
+      type: String,
+      required: true,
+      unique: true,
+      uppercase: true, 
+      minlength: 2,
+      maxlength: 5,
+    },
   },
   { timestamps: true }
 );

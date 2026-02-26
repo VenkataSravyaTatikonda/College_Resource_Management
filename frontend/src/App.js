@@ -1,6 +1,7 @@
 import React from "react";
 import Login from "./Screens/Login";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+//import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import mystore from "./redux/store";
 import StudentHome from "./Screens/Student/Home";
@@ -13,7 +14,7 @@ const App = () => {
   return (
     <>
       <Provider store={mystore}>
-        <Router>
+        <>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/forget-password" element={<ForgetPassword />} />
@@ -25,7 +26,7 @@ const App = () => {
             <Route path="faculty" element={<FacultyHome />} />
             <Route path="admin" element={<AdminHome />} />
           </Routes>
-        </Router>
+        </>
       </Provider>
     </>
   );

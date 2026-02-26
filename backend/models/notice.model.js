@@ -1,28 +1,38 @@
 const mongoose = require("mongoose");
 
-const noticeSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true,
+const noticeSchema = new mongoose.Schema(
+  {
+    title: String,
+    description: String,
+    type: {
+      type: String,
+      enum: ["student", "faculty", "both"],
+    },
+
+    file: {
+      type: String,
+      required: true,
+    },
+
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+
+    viewedBy: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Student",
+        },
+        viewedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
-  description: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-    enum: ["student", "faculty", "both"],
-  },
-  link: {
-    type: String,
-    required: false,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("Notice", noticeSchema);
