@@ -14,6 +14,7 @@ import Subject from "./Subject";
 import Exam from "../Exam";
 import TNP from "../TNP/TNP";
 import MentorTab from "../Mentor/MentorTab";
+//import AcademicView from "../Mentor/AcademicView";
 const MENU_ITEMS = [
   { id: "home", label: "Home" },
   { id: "student", label: "Student", component: Student },

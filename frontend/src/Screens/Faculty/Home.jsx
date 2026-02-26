@@ -15,6 +15,7 @@ import Marks from "./AddMarks";
 import Exam from "../Exam";
 import TNP from "../TNP/TNP";
 import MentorTab from "../Mentor/MentorTab";
+import AcademicView from "../Mentor/AcademicView";
 
 const MENU_ITEMS = [
   { id: "home", label: "Home" },
@@ -125,8 +126,22 @@ const Home = () => {
         );
       }
 
-      return <MentorTab role="faculty" studentId={selectedStudentId} />;
+      return <MentorTab role="faculty" studentId={selectedStudentId} setSelectedMenu={setSelectedMenu} />;
     }
+
+    /* ===== ACADEMIC VIEW ===== */
+    if (selectedMenu === "academic") {
+      if (!selectedStudentId) {
+        return (
+          <div className="text-center mt-10 text-lg text-gray-600">
+            Please select a student first.
+          </div>
+        );
+      }
+
+      return <AcademicView studentId={selectedStudentId} />;
+    }
+
 
     return null;
   };

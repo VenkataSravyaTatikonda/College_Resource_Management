@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import axiosWrapper from "../../utils/AxiosWrapper";
 import toast from "react-hot-toast";
 
-const FacultyStudent = () => {
+const FacultyStudent = ({setSelectedStudentId, setSelectedMenu }) => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const token = localStorage.getItem("userToken");
 
   /* ================= FETCH STUDENTS ================= */
@@ -34,7 +34,8 @@ const FacultyStudent = () => {
 
   /* ================= VIEW ACADEMIC ================= */
   const handleViewAcademic = (studentId) => {
-    navigate(`/faculty/academic/${studentId}`);
+    setSelectedStudentId(studentId);
+    setSelectedMenu("mentor");
   };
 
   /* ================= DELETE STUDENT ================= */

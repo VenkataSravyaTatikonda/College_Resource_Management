@@ -5,12 +5,12 @@ import Navbar from "../components/Navbar";
 const AdminLayout = () => {
   return (
     <>
-    <div>
-      <Navbar />
-      <div className="p-6">
-        <Outlet />
+      <div>
+        <Navbar />
+        <div className="p-6">
+          <Outlet />
+        </div>
       </div>
-    </div>
     </>
   );
 };

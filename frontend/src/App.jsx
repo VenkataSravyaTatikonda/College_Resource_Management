@@ -40,39 +40,40 @@ const App = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* ================= ADMIN ================= */}
-        {/* ================= ADMIN ================= */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute>
-              <AdminLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Dashboard />} />
-          <Route path="student" element={<Student />} />
-          <Route path="faculty" element={<Faculty />} />
-          <Route path="subject" element={<Subject />} />
-          <Route path="branch" element={<Branch />} />
-          <Route path="notices" element={<Notice />} />
-          <Route path="academic/:studentId" element={<AcademicView />} />
-        </Route>
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="student" element={<Student />} />
+            <Route path="faculty" element={<Faculty />} />
+            <Route path="subject" element={<Subject />} />
+            <Route path="branch" element={<Branch />} />
+            <Route path="notices" element={<Notice />} />
+            <Route path="academic/:studentId" element={<AcademicView />} />
+          </Route>
 
-        {/* ================= FACULTY ================= */}
-        <Route
-          path="/faculty"
-          element={
-            <ProtectedRoute>
-              <FacultyLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Dashboard />} />
-          <Route path="notices" element={<Notice />} />
-          <Route path="upload-marks" element={<UploadMarks />} />
-          <Route path="notice/:id/views" element={<NoticeViewStatus />} />
-          <Route path="academic/:studentId" element={<AcademicView />} />
-        </Route>
+
+          {/* ================= FACULTY ================= */}
+          <Route
+            path="/faculty"
+            element={
+              <ProtectedRoute>
+                <FacultyLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="notices" element={<Notice />} />
+            <Route path="upload-marks" element={<UploadMarks />} />
+            <Route path="notice/:id/views" element={<NoticeViewStatus />} />
+            <Route path="academic/:studentId" element={<AcademicView />} />
+          </Route>
+
         {/* ================= STUDENT ================= */}
         <Route
           path="/student"
@@ -111,3 +112,4 @@ const App = () => {
 };
 
 export default App;
+

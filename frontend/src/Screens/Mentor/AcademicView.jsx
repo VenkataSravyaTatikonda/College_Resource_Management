@@ -1,149 +1,104 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import axiosWrapper from "../../utils/AxiosWrapper";
 
-const AcademicView = () => {
-  const { studentId } = useParams(); // ✅ Get from URL
+const AcademicView = ({ studentId }) => {
+   
   const token = localStorage.getItem("userToken");
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  console.log("AcademicView is rendering");
 
   useEffect(() => {
-    const fetchAcademicData = async () => {
+    const fetchAcademic = async () => {
       try {
-        const res = await axiosWrapper.get(`/academic/${studentId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axiosWrapper.get(
+          `/academic/${studentId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log("StudentId:", studentId);
+        console.log("API Response:", res.data);
 
-        setData(res.data.data);
-      } catch (err) {
-        console.error("Academic fetch error:", err);
-
-        if (err.response?.status === 404) {
-          setError("Academic record not found");
-        } else if (err.response?.status === 401) {
-          setError("Unauthorized access");
+        if (res.data.success && res.data.data) {
+          setData(res.data.data);
         } else {
-          setError("Something went wrong");
+          setData(null);
         }
+      } catch (error) {
+        console.error("Academic fetch error:", error);
+        setData(null);
       } finally {
         setLoading(false);
       }
     };
 
     if (studentId) {
-      fetchAcademicData();
-    } else {
-      setError("Invalid student ID");
-      setLoading(false);
+      fetchAcademic();
     }
   }, [studentId, token]);
 
-  /* ================= UI STATES ================= */
-
+  /* ================= LOADING ================= */
   if (loading) {
     return (
-      <div className="text-center mt-10 text-lg font-medium">
+      <div className="text-center mt-10 text-gray-600">
         Loading Academic Data...
       </div>
     );
   }
 
-  if (error) {
+  /* ================= NO DATA ================= */
+  if (!data || !data.semesters || data.semesters.length === 0) {
     return (
-      <div className="text-center mt-10 text-red-600 font-semibold">
-        {error}
+      <div className="text-center mt-10 text-gray-500">
+        No Academic Data Found
       </div>
     );
   }
 
-  if (!data || !data.semesters || data.semesters.length === 0) {
-    return <div className="text-center mt-10">No Academic Data Found</div>;
-  }
-
-  /* ================= MAIN UI ================= */
-
+  /* ================= UI ================= */
   return (
-    <div className="p-6">
+    <div className="p-6 space-y-8">
       {data.semesters.map((sem, index) => (
-        <div key={index} className="mb-10 border p-4 rounded shadow-sm">
+        <div key={index} className="border rounded-lg p-4 shadow-sm">
+
           <h2 className="text-lg font-bold mb-4">
             Semester {sem.semesterNumber} ({sem.academicYear})
           </h2>
 
-          <table className="min-w-full border text-xs text-center mb-4">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border p-2">Course Code</th>
-                <th className="border p-2">Course Name</th>
-                <th className="border p-2">Credits</th>
-                <th className="border p-2">Total</th>
-                <th className="border p-2">Grade</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {sem.subjects?.map((sub, i) => (
-                <tr key={i}>
-                  <td className="border p-1">{sub.courseCode}</td>
-                  <td className="border p-1">{sub.courseName}</td>
-                  <td className="border p-1">{sub.credits}</td>
-                  <td className="border p-1">{sub.total}</td>
-                  <td className="border p-1 font-semibold">{sub.grade}</td>
+          <div className="overflow-x-auto">
+            <table className="min-w-full border text-sm text-center">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="border p-2">Course Code</th>
+                  <th className="border p-2">Course Name</th>
+                  <th className="border p-2">Credits</th>
+                  <th className="border p-2">Total</th>
+                  <th className="border p-2">Grade</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div className="mt-3 space-y-1 text-sm">
-            <p>
-              <strong>SGPA:</strong> {sem.sgpa}
-            </p>
-            <p>
-              <strong>CGPA:</strong> {sem.cgpa}
-            </p>
-            <p>
-              <strong>Backlogs:</strong> {sem.backlogs}
-            </p>
+              </thead>
+              <tbody>
+                {sem.subjects?.map((sub, i) => (
+                  <tr key={i}>
+                    <td className="border p-1">{sub.courseCode}</td>
+                    <td className="border p-1">{sub.courseName}</td>
+                    <td className="border p-1">{sub.credits}</td>
+                    <td className="border p-1">{sub.total}</td>
+                    <td className="border p-1 font-semibold">
+                      {sub.grade}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
-          {/* ===== BACKLOG COURSES ===== */}
-          {sem.backlogCourses?.length > 0 && (
-            <div className="mt-4 border p-3 rounded bg-red-50">
-              <h3 className="text-red-600 font-semibold mb-2">
-                Backlog Courses
-              </h3>
+          <div className="mt-4 space-y-1 text-sm">
+            <p><strong>SGPA:</strong> {sem.sgpa}</p>
+            <p><strong>CGPA:</strong> {sem.cgpa}</p>
+            <p><strong>Backlogs:</strong> {sem.backlogs}</p>
+          </div>
 
-              <table className="min-w-full border text-xs text-center">
-                <thead>
-                  <tr className="bg-red-100">
-                    <th className="border p-2">Course Code</th>
-                    <th className="border p-2">Course Name</th>
-                    <th className="border p-2">Marks</th>
-                    <th className="border p-2">Grade</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {sem.backlogCourses.map((b, i) => (
-                    <tr key={i}>
-                      <td className="border p-1">{b.courseCode}</td>
-                      <td className="border p-1">{b.courseName}</td>
-                      <td className="border p-1">{b.marks}</td>
-                      <td className="border p-1 text-red-600 font-bold">
-                        {b.grade}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
         </div>
       ))}
     </div>
