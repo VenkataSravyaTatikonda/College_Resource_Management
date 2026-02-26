@@ -96,12 +96,13 @@ const Home = () => {
     if (selectedMenu === "notice") {
       return (
         <Notice
-          isFacultyOrAdmin={true}
+          role="faculty"
           setSelectedMenu={setSelectedMenu}
           setSelectedNoticeId={setSelectedNoticeId}
         />
       );
     }
+          
 
     /* ===== NOTICE VIEW STATUS ===== */
     if (selectedMenu === "notice-status") {

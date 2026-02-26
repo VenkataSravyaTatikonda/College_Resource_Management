@@ -117,9 +117,27 @@ const Home = () => {
       return <MyApplications/>;
     }
 
-    /*const menuItem = MENU_ITEMS.find(
-      (item) => item.id === selectedMenu
-    );*/
+    if(selectedMenu === "notice"){
+      return (
+        <Notice role="student" />
+      );
+    }
+
+    if(selectedMenu === "material") {
+      return <Material />;
+    }
+
+    if(selectedMenu === "exam"){
+      return <Exam />;
+    }
+
+    if(selectedMenu === "marks"){
+      return <ViewMarks />;
+    }
+
+    if(selectedMenu === "timetable"){
+      return <Timetable />;
+    }
 
       if(selectedMenu === "mentor"){
         return <MentorTab role="student" studentId={profileData?._id} />;

@@ -14,7 +14,9 @@ import Subject from "./Subject";
 import Exam from "../Exam";
 import TNP from "../TNP/TNP";
 import MentorTab from "../Mentor/MentorTab";
-//import AcademicView from "../Mentor/AcademicView";
+import EditNotice from "../Common/EditNotice";
+import CreateNotice from "../Common/CreateNotice";
+
 const MENU_ITEMS = [
   { id: "home", label: "Home" },
   { id: "student", label: "Student", component: Student },
@@ -65,8 +67,31 @@ const Home = () => {
     if (selectedMenu === "notice") {
       return (
         <Notice
+        role="admin"
           setSelectedMenu={setSelectedMenu}
           setSelectedNoticeId={setSelectedNoticeId}
+        />
+      );
+    }
+
+    if (selectedMenu === "create-notice") {
+      return (
+          <CreateNotice
+            goBack={() => {
+              setSelectedMenu("notice");
+            }}
+          />
+      );
+    }
+
+    if (selectedMenu === "edit-notice") {
+      return (
+        <EditNotice
+          noticeId={selectedNoticeId}
+          goBack={() => {
+            
+            setSelectedMenu("notice");
+          }}
         />
       );
     }
