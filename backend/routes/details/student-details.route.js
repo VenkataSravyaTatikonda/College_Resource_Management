@@ -11,6 +11,7 @@ const {
   updatePasswordHandler,
   searchStudentsController,
   updateLoggedInPasswordController,
+  getStudentByIdController,
 } = require("../../controllers/details/student-details.controller");
 const upload = require("../../middlewares/multer.middleware");
 const auth = require("../../middlewares/auth.middleware");
@@ -26,5 +27,6 @@ router.post("/forget-password", sendForgetPasswordEmail);
 router.post("/update-password/:resetId", updatePasswordHandler);
 router.post("/change-password", auth, updateLoggedInPasswordController);
 router.post("/search", auth, searchStudentsController);
+router.get("/:id", auth, getStudentByIdController);
 
 module.exports = router;

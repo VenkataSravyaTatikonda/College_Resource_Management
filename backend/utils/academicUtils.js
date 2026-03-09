@@ -12,7 +12,7 @@ const getGradePoint = (grade) => {
 };
 
 const getGrade = (total) => {
-  if (total >= 90) return "O";   // ✅ fixed
+  if (total >= 90) return "O";
   if (total >= 80) return "A+";
   if (total >= 70) return "A";
   if (total >= 60) return "B+";
@@ -22,44 +22,73 @@ const getGrade = (total) => {
 };
 
 const processSubjects = (subjects) => {
+
   let totalCredits = 0;
   let weightedSum = 0;
   let backlogCount = 0;
 
   const updatedSubjects = subjects.map((sub) => {
 
-    /* ===== ATTENDANCE FINAL (Average of 3 months) ===== */
+    /* ===== ATTENDANCE FINAL ===== */
+
     const att1 = Number(sub.attendanceMonth1 || 0);
     const att2 = Number(sub.attendanceMonth2 || 0);
     const att3 = Number(sub.attendanceMonth3 || 0);
 
     const attendanceFinal = Math.round((att1 + att2 + att3) / 3);
 
-    /* ===== CIE CALCULATION (Scaled to 30) ===== */
-    const aat1 = Number(sub.aat1 || 0);
-    const aat2 = Number(sub.aat2 || 0);
-    const mid1 = Number(sub.mid1 || 0);
-    const mid2 = Number(sub.mid2 || 0);
+    /* ===== CIE CALCULATION ===== */
 
-    const bestAAT = Math.max(aat1, aat2);
-    const bestMID = Math.max(mid1, mid2);
+    let cie = 0;
 
-    const internalRaw = bestAAT + bestMID;  // out of 40
-    const cie = Math.round((internalRaw / 40) * 30);
+    if (sub.type === "lab") {
+
+      // LAB → Direct internal marks
+      cie = Number(sub.cie || 0);
+
+    } else {
+
+      /* ===== THEORY ===== */
+
+      const aat1 = Number(sub.aat1 || 0);
+      const aat2 = Number(sub.aat2 || 0);
+      const mid1 = Number(sub.mid1 || 0);
+      const mid2 = Number(sub.mid2 || 0);
+
+      // Test calculations
+      const test1 = aat1 + mid1;
+      const test2 = aat2 + mid2;
+
+      const best = Math.max(test1, test2);
+      const least = Math.min(test1, test2);
+
+      // 75% + 25% rule
+      const internal = (best * 0.75) + (least * 0.25); // out of 45
+
+      // Convert to 30
+      cie = Math.round((internal / 45) * 30);
+    }
 
     /* ===== TOTAL ===== */
-    const see = Number(sub.see || 0);
-    const total = cie + see;
 
-    /* ===== GRADE & BACKLOG ===== */
+    const see = Number(sub.see || 0);
+    let total=0;
+    if(sub.type === "internship"){
+      total = Number(sub.total || 0);
+    } else {
+      total = cie + see;
+    }
+
+    /* ===== GRADE ===== */
+
     const grade = getGrade(total);
     const gradePoint = getGradePoint(grade);
 
     const isBacklog = grade === "F";
 
-    if (isBacklog) {
-      backlogCount++;
-    }
+    if (isBacklog) backlogCount++;
+
+    /* ===== CREDITS ===== */
 
     const credits = Number(sub.credits || 0);
 
@@ -75,6 +104,8 @@ const processSubjects = (subjects) => {
       isBacklog,
     };
   });
+
+  /* ===== SGPA ===== */
 
   const sgpa =
     totalCredits === 0

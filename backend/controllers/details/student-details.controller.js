@@ -312,22 +312,20 @@ const updatePasswordHandler = async (req, res) => {
 
 const searchStudentsController = async (req, res) => {
   try {
+
     const { enrollmentNo, name, semester, branch } = req.body;
+
     let query = {};
 
-    if (!enrollmentNo && !name && !semester && !branch) {
-      return ApiResponse.badRequest("Select at least one filter").send(res);
-    }
-
     if (enrollmentNo) {
-      query.enrollmentNo = enrollmentNo;
+      query.enrollmentNo = enrollmentNo.trim();
     }
 
     if (name) {
       query.$or = [
-        { firstName: { $regex: name, $options: "i" } },
-        { middleName: { $regex: name, $options: "i" } },
-        { lastName: { $regex: name, $options: "i" } },
+        { firstName: { $regex: name.trim(), $options: "i" } },
+        { middleName: { $regex: name.trim(), $options: "i" } },
+        { lastName: { $regex: name.trim(), $options: "i" } }
       ];
     }
 
@@ -341,22 +339,18 @@ const searchStudentsController = async (req, res) => {
 
     const students = await studentDetails
       .find(query)
-      .select("-password -__v")
-      .populate("branchId")
-      .sort({ enrollmentNo: 1 });
+      .populate("branchId", "name");
 
-    if (!students || students.length === 0) {
-      return ApiResponse.notFound("No students found").send(res);
-    }
+    return ApiResponse.success(students, "Students Found").send(res);
 
-    return ApiResponse.success(students, "Students found successfully").send(
-      res
-    );
   } catch (error) {
-    console.error("Search Students Error: ", error);
+
+    console.error("Search Error:", error);
+
     return ApiResponse.internalServerError().send(res);
   }
 };
+
 
 const updateLoggedInPasswordController = async (req, res) => {
   try {
@@ -404,6 +398,26 @@ const updateLoggedInPasswordController = async (req, res) => {
   }
 };
 
+const getStudentByIdController = async (req, res) => {
+  try {
+
+    const student = await studentDetails
+      .findById(req.params.id)
+      .select("-password -__v")
+      .populate("branchId");
+
+    if (!student) {
+      return ApiResponse.notFound("Student not found").send(res);
+    }
+
+    return ApiResponse.success(student, "Student found").send(res);
+
+  } catch (error) {
+    console.error("Get Student Error:", error);
+    return ApiResponse.internalServerError().send(res);
+  }
+};
+
 module.exports = {
   loginStudentController,
   getAllDetailsController,
@@ -415,4 +429,5 @@ module.exports = {
   updatePasswordHandler,
   searchStudentsController,
   updateLoggedInPasswordController,
+  getStudentByIdController,
 };

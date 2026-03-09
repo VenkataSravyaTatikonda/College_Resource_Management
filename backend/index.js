@@ -36,7 +36,9 @@ app.use("/api/exam", require("./routes/exam.route"));
 app.use("/api/marks", require("./routes/marks.route"));
 app.use("/api/tnp", require("./routes/tnp.route"));
 app.use("/api/academic", require("./routes/academicRoutes"));
-
+app.use("/api/mentor", require("./routes/mentor.routes"));
+app.use("/uploads", express.static("uploads"));
+app.use("/media", express.static(path.join(__dirname, "uploads/mentor")));
 app.listen(port, () => {
   console.log(`Server Listening On http://localhost:${port}`);
 });

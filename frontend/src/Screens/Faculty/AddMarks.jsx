@@ -69,7 +69,7 @@ const AddMarks = () => {
           headers: {
             Authorization: `Bearer ${userToken}`,
           },
-        }
+        },
       );
       if (response.data.success) {
         setSubjects(response.data.data);
@@ -90,16 +90,19 @@ const AddMarks = () => {
   const fetchExams = async () => {
     try {
       toast.loading("Loading exams...");
-      const response = await axiosWrapper.get(
-        `/exam?semester=${selectedSemester}`,
-        {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        }
-      );
+
+      const response = await axiosWrapper.get("/exam", {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+
       if (response.data.success) {
-        setExams(response.data.data);
+        const filteredExams = response.data.data.filter(
+          (exam) => exam.semester == selectedSemester,
+        );
+
+        setExams(filteredExams);
       } else {
         toast.error(response.data.message);
       }
@@ -123,7 +126,7 @@ const AddMarks = () => {
         `/marks/students?branch=${selectedBranch?._id}&subject=${selectedSubject?._id}&semester=${selectedSemester}&examId=${selectedExam?._id}`,
         {
           headers: { Authorization: `Bearer ${userToken}` },
-        }
+        },
       );
 
       toast.dismiss();
@@ -164,7 +167,7 @@ const AddMarks = () => {
         `/marks?semester=${selectedSemester}&examId=${selectedExam?._id}`,
         {
           headers: { Authorization: `Bearer ${userToken}` },
-        }
+        },
       );
 
       toast.dismiss();
@@ -172,7 +175,7 @@ const AddMarks = () => {
         toast.success("Marks found!");
         const combinedData = students.map((student) => {
           const marks = response.data.data.find(
-            (mark) => mark.student._id === student._id
+            (mark) => mark.student._id === student._id,
           );
           if (marks) {
             return { ...student, obtainedMarks: marks.obtainedMarks };
@@ -212,7 +215,7 @@ const AddMarks = () => {
         ([studentId, marks]) => ({
           studentId,
           obtainedMarks: Number(marks),
-        })
+        }),
       );
 
       const response = await axiosWrapper.post(
@@ -225,7 +228,7 @@ const AddMarks = () => {
         },
         {
           headers: { Authorization: `Bearer ${userToken}` },
-        }
+        },
       );
 
       if (response.data.success) {
@@ -363,7 +366,7 @@ const AddMarks = () => {
                 <option value="">Select Exam</option>
                 {exams?.map((exam) => (
                   <option key={exam._id} value={exam._id}>
-                    {exam.name}
+                    {exam.examName} ({exam.examType})
                   </option>
                 ))}
               </select>
@@ -405,14 +408,14 @@ const AddMarks = () => {
                     Branch and Semester:
                   </span>
                   <p className="text-gray-800">
-                    {selectedBranch?.branchId} - Semester {selectedSemester}
+                    {selectedBranch?.name} - Semester {selectedSemester}
                   </p>
                 </div>
 
                 <div className="border p-3 rounded-md shadow">
                   <span className="text-sm text-gray-500">Exam:</span>
                   <p className="text-gray-800">
-                    {selectedExam?.name || "Not Selected"}
+                    {selectedExam?.examName || "Not Selected"}
                   </p>
                 </div>
                 <div className="border p-3 rounded-md shadow">
