@@ -52,12 +52,6 @@ A comprehensive MERN stack-based College Management System that helps manage aca
 - MongoDB
 - npm
 
-## Setup Instructions
-
-Project Setup Video Tutorial: https://youtu.be/gw4jh4RHzuo
-
-Sample .env file is added in both backend and frontend, copy that variables and create `.env` in both the folders and then follow below given instructions
-
 1. Clone the repository:
 
 ```bash
@@ -144,17 +138,3 @@ college-management-system/
 │   └── public/
 └── README.md
 ```
-
-## For Any Doubt Feel Free To Contact Me 🚀
-
-- [My Website](http://krishjotaniya.netlify.app/)
-- [Linkedin](https://www.linkedin.com/in/krishjotaniya/)
-- [krishjotaniya71@gmail.com](mailto:krishjotaniya71@gmail.com)
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
