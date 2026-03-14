@@ -1,44 +1,54 @@
-# College Management System
+# 🎓 College Resource Management System (CRMS)
 
 [![MERN Stack](https://img.shields.io/badge/Stack-MERN-blue)](https://www.mongodb.com/mern-stack)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-v14+-green)](https://nodejs.org)
 [![React](https://img.shields.io/badge/React-v17+-blue)](https://reactjs.org)
 
-A comprehensive MERN stack-based College Management System that helps manage academic activities, student information, faculty details, and administrative tasks. This system streamlines the management of educational institutions by providing a centralized platform for administrators, faculty, and students.
 
-## Features
+A comprehensive MERN Stack–based College Resource Management System designed to efficiently manage college resources, student information, and academic activities. The system provides a centralized platform for administrators, mentors, and students to manage academic data, mentorship activities, and training & placement processes within the institution.
 
-### Admin Features
+🚀 Feature
 
-- Manage faculty accounts with detailed profiles and emergency contacts
-- Manage student accounts with enrollment numbers and academic details
-- Manage academic branches
-- Handle subject/course management by semester and branch
-- Generate and manage notices for students and faculty
-- Upload and manage timetables by branch and semester
-- Profile management and password updates
+👩‍🎓 Student Management – Manage student profiles and academic records
+🧑‍💼 Admin Dashboard – Centralized administrative control
+👨‍🏫 Mentor Management – Mentors can monitor and guide assigned students
+💼 Training & Placement (TNP) Module – Manage placement activities and student eligibility
+🔍 Student Finder – Search and access student information quickly
+📚 Resource Management – Efficiently manage institutional resources
+🔐 Authentication System – Secure login for administrators and users
 
-### Faculty Features
+🧩 System Modules
 
-- View and manage personal profile with emergency contacts
-- Upload and manage study materials (notes, assignments, syllabus)
-- Filter and organize materials by subject, semester, and type
-- Upload and manage timetables for their branches
-- Search and view student information by enrollment, name, or semester
-- View and respond to notices
-- Update profile and credentials
-- Password management and reset functionality
+The system is divided into several functional modules:
 
-### Student Features
+Admin Module
 
-- View personal profile and academic details
-- Access study materials filtered by subject and type
-- View class timetables with download option
-- Access notices and announcements
-- Update profile information
-- Password management and reset functionality
+Manage students and mentors
 
+Monitor academic and resource data
+
+Student Module
+
+View personal and academic information
+
+Access resource details
+
+Mentor Module
+
+Track student progress
+
+Provide mentorship and academic guidance
+
+Training & Placement (TNP) Module
+
+Manage placement opportunities
+
+Track student eligibility and placement records
+
+Resource Management Module
+
+Manage college resources and related data
 ## Tech Stack
 
 - Frontend: React.js
