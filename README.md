@@ -11,44 +11,38 @@ A comprehensive MERN Stack–based College Resource Management System designed t
 🚀 Feature
 
 👩‍🎓 Student Management – Manage student profiles and academic records
+
 🧑‍💼 Admin Dashboard – Centralized administrative control
+
 👨‍🏫 Mentor Management – Mentors can monitor and guide assigned students
+
 💼 Training & Placement (TNP) Module – Manage placement activities and student eligibility
+
 🔍 Student Finder – Search and access student information quickly
+
 📚 Resource Management – Efficiently manage institutional resources
+
 🔐 Authentication System – Secure login for administrators and users
 
 🧩 System Modules
 
 The system is divided into several functional modules:
 
-Admin Module
-
-Manage students and mentors
-
-Monitor academic and resource data
-
-Student Module
-
-View personal and academic information
-
-Access resource details
-
-Mentor Module
-
-Track student progress
-
-Provide mentorship and academic guidance
-
-Training & Placement (TNP) Module
-
-Manage placement opportunities
-
-Track student eligibility and placement records
-
-Resource Management Module
-
-Manage college resources and related data
+- Admin Module
+- Manage students and mentors
+- Monitor academic and resource data
+- Student Module
+- View personal and academic information
+- Access resource details
+- Mentor Module
+- Track student progress
+- Provide mentorship and academic guidance
+- Training & Placement (TNP) Module
+- Manage placement opportunities
+- Track student eligibility and placement records
+- Resource Management Module
+- Manage college resources and related data
+  
 ## Tech Stack
 
 - Frontend: React.js
