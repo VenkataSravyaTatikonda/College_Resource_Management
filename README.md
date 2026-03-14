@@ -8,7 +8,8 @@
 
 A comprehensive MERN Stack–based College Resource Management System designed to efficiently manage college resources, student information, and academic activities. The system provides a centralized platform for administrators, mentors, and students to manage academic data, mentorship activities, and training & placement processes within the institution.
 
-🚀 Feature
+## Features
+
 
 👩‍🎓 Student Management – Manage student profiles and academic records
 
@@ -24,7 +25,8 @@ A comprehensive MERN Stack–based College Resource Management System designed t
 
 🔐 Authentication System – Secure login for administrators and users
 
-🧩 System Modules
+## System Modules
+
 
 The system is divided into several functional modules:
 
